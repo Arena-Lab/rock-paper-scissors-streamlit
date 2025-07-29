@@ -1,12 +1,6 @@
 import streamlit as st
 import random
 
-# 🎵 Royalty-free audio assets
-CLICK_SOUND = "https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3"
-WIN_SOUND = "https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3"
-LOSE_SOUND = "https://assets.mixkit.co/sfx/preview/mixkit-losing-bleeps-2026.mp3"
-MUSIC_URL = "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Loyalty_Freak_Music/LO-FI_GROOVES/Loyalty_Freak_Music_-_03_-_YOU_COULD_USE_ME.mp3"
-
 # 🪨📄✂️ ASCII Art
 ascii_art = {
     "Rock": ''' 
@@ -39,16 +33,6 @@ choices = ["Rock", "Paper", "Scissors"]
 
 # 🔧 Streamlit Config
 st.set_page_config(page_title="Rock-Paper-Scissors", page_icon="✊", layout="centered")
-
-# 🎶 Background Music Embed (autoplays on supported browsers)
-st.markdown(
-    f"""
-    <audio autoplay loop>
-        <source src="{MUSIC_URL}" type="audio/mpeg">
-    </audio>
-    """,
-    unsafe_allow_html=True
-)
 
 # 🎮 App Title
 st.title("🎮 Rock-Paper-Scissors Battle")
@@ -103,4 +87,3 @@ st.write(st.session_state.score)
 # 📱 Mobile Shortcut Tip
 st.markdown("---")
 st.info("💡 Tip: Add this site to your phone's Home Screen for app-like experience!")
-
