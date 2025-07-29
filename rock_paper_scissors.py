@@ -1,23 +1,25 @@
+import streamlit as st
 import random
-rock = ''' 
+
+# ASCII Art
+ascii_art = {
+    "Rock": ''' 
     _______
 ---'   ____)
       (_____)
       (_____)    
       (____)
 ---.__(___)
-ROCK'''
-
-paper = ''' 
+ROCK''',
+    "Paper": ''' 
      _______
 ---'    ____)____
            ______)
           _______)     
          _______)
 ---.__________)
-PAPER'''
-
-scissors = ''' 
+PAPER''',
+    "Scissors": ''' 
     _______
 ---'   ____)____
           ______)
@@ -25,35 +27,15 @@ scissors = '''
       (____)
 ---.__(___)
 SCISSORS'''
+}
 
-print("\n                                           Welcome to Rock-Paper-Scissor Game!!!\nPress 0 for Rock\nPress 1 for Paper\nPress 2 for Scissor\n")
+choices = ["Rock", "Paper", "Scissors"]
 
-images = [rock,paper,scissors]
+st.set_page_config(page_title="Rock-Paper-Scissors", page_icon="🎮")
 
-while True: 
-    try:
-        user_choice = int(input("\nWhat do you choose? : "))
-        if user_choice <=2:
-            print (images[user_choice]) 
-        else: 
-            print("Invalid Choice!! Please Choose Between 0 to 2")
-            continue        
-        computer_choice = (random.randint(0,2))
-        print (images[computer_choice])
-        if user_choice >= 3:
-            print ("Invalid Choice!! Please Choose Between 0 to 2")
-            continue
-        elif user_choice == computer_choice:
-            print("\nIT\'s A TIE")
-        elif user_choice == 2 and computer_choice == 0:
-            print("\nYOU LOSE!!")
-        elif user_choice == 1 and computer_choice ==2:
-            print("\nYOU LOSE!!")
-        elif user_choice > computer_choice:
-            print("\nYOU WON!!")
-        elif user_choice == 0 and computer_choice == 1:
-            print("YOU LOSE!!")    
-        elif user_choice == 0 and computer_choice == 2:
-            print("\nYOU WON!!")    
-    except ValueError:
-        print("Please enter a valid number (0, 1, or 2).")   
+st.title("🎮 Rock-Paper-Scissors Game")
+st.write("Choose Rock, Paper, or Scissors to play against the computer!")
+
+# Score Tracking
+if "score" not in st.session_state:
+    st.session_state.score = {"You": 0, "Computer": 0, "Ties": 0_
