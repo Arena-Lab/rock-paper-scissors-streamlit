@@ -1,13 +1,13 @@
 import streamlit as st
 import random
-import time
 
-# 🎵 Royalty-free audio links
+# 🎵 Royalty-free audio assets
 CLICK_SOUND = "https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3"
 WIN_SOUND = "https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3"
 LOSE_SOUND = "https://assets.mixkit.co/sfx/preview/mixkit-losing-bleeps-2026.mp3"
+MUSIC_URL = "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Loyalty_Freak_Music/LO-FI_GROOVES/Loyalty_Freak_Music_-_03_-_YOU_COULD_USE_ME.mp3"
 
-# ASCII Art
+# 🪨📄✂️ ASCII Art
 ascii_art = {
     "Rock": ''' 
     _______
@@ -37,75 +37,70 @@ SCISSORS'''
 
 choices = ["Rock", "Paper", "Scissors"]
 
-# Setup
-st.set_page_config(page_title="Couple RPS", page_icon="💑", layout="centered")
+# 🔧 Streamlit Config
+st.set_page_config(page_title="Rock-Paper-Scissors", page_icon="✊", layout="centered")
 
-st.title("💑 Couple Rock-Paper-Scissors")
-st.markdown("Let two players battle it out with animated fun and emoji-filled action!")
+# 🎶 Background Music Embed (autoplays on supported browsers)
+st.markdown(
+    f"""
+    <audio autoplay loop>
+        <source src="{MUSIC_URL}" type="audio/mpeg">
+    </audio>
+    """,
+    unsafe_allow_html=True
+)
 
-# Player names
-p1 = st.text_input("Player 1 Name (🧍)", value="Player 1")
-p2 = st.text_input("Player 2 Name (🧍‍♀️)", value="Player 2")
+# 🎮 App Title
+st.title("🎮 Rock-Paper-Scissors Battle")
+st.markdown("Customize your nickname and challenge the computer!")
 
-# Score Tracker
+# 🧍 Player Name
+player_name = st.text_input("Enter your nickname", "Player")
+
+# 🧮 Score Session
 if "score" not in st.session_state:
-    st.session_state.score = {p1: 0, p2: 0, "Ties": 0}
+    st.session_state.score = {"You": 0, "Computer": 0, "Ties": 0}
 
-# Player 1 Choice
-p1_choice = st.selectbox(f"{p1}, make your move ✊✋✌️", choices, key="p1_choice")
-if st.button("✅ Lock Player 1's Choice"):
-    st.session_state.p1_choice_locked = p1_choice
-    st.success(f"{p1} has locked their choice! Now it's {p2}'s turn.")
+# 🧠 Game Logic
+user_choice = st.selectbox("🤔 What will you throw?", choices)
 
-# Player 2 Choice
-if "p1_choice_locked" in st.session_state:
-    p2_choice = st.selectbox(f"{p2}, your move ✊✋✌️", choices, key="p2_choice")
-    if st.button("🔥 Play Round"):
-        st.audio(CLICK_SOUND, format="audio/mp3", autoplay=True)
-        time.sleep(0.4)
+if st.button("🔥 Play"):
+    # 🔊 Click Sound
+    st.audio(CLICK_SOUND, format="audio/mp3", autoplay=True)
 
-        # Show Choices
-        st.markdown(f"### 🧍 {p1} chose:")
-        st.code(ascii_art[st.session_state.p1_choice_locked])
-        time.sleep(0.4)
+    computer_choice = random.choice(choices)
 
-        st.markdown(f"### 🧍‍♀️ {p2} chose:")
-        st.code(ascii_art[p2_choice])
-        time.sleep(0.4)
+    # 🖼️ Show Player Choice
+    st.markdown(f"### 🧍 {player_name} chose:")
+    st.code(ascii_art[user_choice])
 
-        # Determine result
-        p1_move = st.session_state.p1_choice_locked
-        p2_move = p2_choice
+    # 🖼️ Show Computer Choice
+    st.markdown("### 🤖 Computer chose:")
+    st.code(ascii_art[computer_choice])
 
-        if p1_move == p2_move:
-            result = "🤝 It's a tie!"
-            st.session_state.score["Ties"] += 1
-        elif (p1_move == "Rock" and p2_move == "Scissors") or \
-             (p1_move == "Paper" and p2_move == "Rock") or \
-             (p1_move == "Scissors" and p2_move == "Paper"):
-            result = f"🎉 {p1} wins this round!"
-            st.audio(WIN_SOUND, format="audio/mp3", autoplay=True)
-            st.session_state.score[p1] += 1
-        else:
-            result = f"🔥 {p2} wins this round!"
-            st.audio(LOSE_SOUND, format="audio/mp3", autoplay=True)
-            st.session_state.score[p2] += 1
+    # 🧠 Determine Result
+    if user_choice == computer_choice:
+        result = "🤝 It's a tie!"
+        st.session_state.score["Ties"] += 1
+    elif (user_choice == "Rock" and computer_choice == "Scissors") or \
+         (user_choice == "Paper" and computer_choice == "Rock") or \
+         (user_choice == "Scissors" and computer_choice == "Paper"):
+        result = "🎉 You won!"
+        st.audio(WIN_SOUND, format="audio/mp3", autoplay=True)
+        st.session_state.score["You"] += 1
+    else:
+        result = "😢 You lost!"
+        st.audio(LOSE_SOUND, format="audio/mp3", autoplay=True)
+        st.session_state.score["Computer"] += 1
 
-        # Show result with animation
-        st.balloons()
-        st.subheader(result)
+    # 🏁 Show Result
+    st.subheader(result)
 
-        # Reset turn
-        del st.session_state.p1_choice_locked
-
-# Scoreboard
+# 🧾 Scoreboard
 st.markdown("### 📊 Scoreboard")
 st.write(st.session_state.score)
 
-# Reset Option
-if st.button("🔁 Reset Game"):
-    st.session_state.score = {p1: 0, p2: 0, "Ties": 0}
-    st.success("Game has been reset!")
-
+# 📱 Mobile Shortcut Tip
 st.markdown("---")
-st.info("📱 Tip: Add this to your phone's home screen to play anytime!")
+st.info("💡 Tip: Add this site to your phone's Home Screen for app-like experience!")
+
