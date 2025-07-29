@@ -1,7 +1,8 @@
+
 import streamlit as st
 import random
 
-# 3D-style ASCII Art
+# 3D ASCII Art
 ascii_art = {
     "Rock": ''' 
     _______
@@ -31,10 +32,10 @@ SCISSORS'''
 
 choices = ["Rock", "Paper", "Scissors"]
 
-# Streamlit Page Config
+# Page Config
 st.set_page_config(page_title="Rock-Paper-Scissors 3D", page_icon="🕹️", layout="centered")
 
-# CSS for 3D visuals
+# CSS Fix for Input Visibility and Style
 st.markdown("""
     <style>
     html, body, [class*="css"] {
@@ -42,19 +43,12 @@ st.markdown("""
         color: #fff;
         font-family: 'Segoe UI', sans-serif;
     }
-    .stTextInput>div>div>input {
-        background-color: #ffffff10;
-        color: white;
-        border-radius: 10px;
-        padding: 8px;
-        font-weight: bold;
-    }
-    .stSelectbox>div>div {
-        background-color: #ffffff10;
-        color: white;
-        border-radius: 10px;
-        padding: 8px;
-        font-weight: bold;
+    input, select, textarea {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        border-radius: 8px !important;
+        padding: 10px !important;
+        font-size: 16px !important;
     }
     .stButton>button {
         background: linear-gradient(to right, #ff416c, #ff4b2b);
@@ -80,13 +74,13 @@ st.markdown("<h1 class='emoji'>🎮 Rock-Paper-Scissors Battle</h1>", unsafe_all
 st.markdown("#### Enter your name and challenge the computer in a 3D-styled battle!")
 
 # Input
-player_name = st.text_input("Your Nickname:", value="", max_chars=20, placeholder="Enter nickname...")
+player_name = st.text_input("Your Nickname:", value="", max_chars=20)
 
-# Score Tracking
+# Score Tracker
 if "score" not in st.session_state:
     st.session_state.score = {"You": 0, "Computer": 0, "Ties": 0}
 
-# Move selection
+# Choice selection
 user_choice = st.selectbox("🧠 What will you throw?", choices)
 
 if st.button("🔥 Play"):
@@ -98,7 +92,7 @@ if st.button("🔥 Play"):
     st.markdown("### 🤖 Computer chose:")
     st.code(ascii_art[computer_choice])
 
-    # Result logic
+    # Game logic
     if user_choice == computer_choice:
         result = "🤝 It's a tie!"
         st.session_state.score["Ties"] += 1
@@ -122,7 +116,6 @@ st.markdown(f"""
 - 🤝 Ties: `{st.session_state.score['Ties']}`
 """)
 
-# Tip for mobile shortcut
+# Mobile Shortcut Info
 st.markdown("---")
 st.info("💡 Tip: On mobile, tap the browser's menu and **'Add to Home Screen'** for app-like use!")
-
